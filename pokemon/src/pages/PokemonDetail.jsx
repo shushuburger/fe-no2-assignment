@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import MOCK_DATA from '../data/mock';
 import styled from 'styled-components';
+import RedButton from '../styles/RedButton';
+import { usePokemon } from '../context/Context';
 
 const DetailPage = styled.div`
   max-width: 480px;
@@ -52,12 +54,14 @@ const BackButton = styled.button`
 const PokemonDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { selectedList, addPokemon, removePokemon } = usePokemon();
 
   const query = new URLSearchParams(location.search);
   const id = Number(query.get('id'));
-
   const pokemon = MOCK_DATA.find(p => p.id === id);
   if (!pokemon) return <p>포켓몬을 찾을 수 없습니다.</p>;
+
+  const isSelected = selectedList.some(p => p.id === pokemon.id);
 
   return (
     <DetailPage>
@@ -65,7 +69,16 @@ const PokemonDetail = () => {
       <Name>{pokemon.korean_name}</Name>
       <TypeText>타입: {pokemon.types.join(', ')}</TypeText>
       <Description>{pokemon.description}</Description>
-      <BackButton onClick={() => navigate(-1)}>뒤로 가기</BackButton>
+
+      {isSelected ? (
+        <RedButton onClick={() => removePokemon(pokemon.id)}>삭제</RedButton>
+      ) : (
+        <RedButton onClick={() => addPokemon(pokemon)}>추가</RedButton>
+      )}
+
+      <div style={{ marginTop: '16px' }}>
+        <BackButton onClick={() => navigate(-1)}>뒤로 가기</BackButton>
+      </div>
     </DetailPage>
   );
 };
