@@ -20,7 +20,7 @@ const Section = styled.section`
 const Dex = () => {
   const [selectedList, setSelectedList] = useState([]);
 
-  const handleAdd = (pokemon) => {
+  const addPokemon = (pokemon) => {
     if (selectedList.some(p => p.id === pokemon.id)) {
       alert("이미 선택된 포켓몬입니다.");
       return;
@@ -32,17 +32,17 @@ const Dex = () => {
     setSelectedList([...selectedList, pokemon]);
   };
 
-  const handleRemove = (id) => {
+  const removePokemon = (id) => {
     setSelectedList(selectedList.filter(p => p.id !== id));
   };
 
   return (
     <DexPage>
       <Section>
-        <Dashboard selectedList={selectedList} onRemove={handleRemove} />
+        <Dashboard selectedList={selectedList} onRemove={removePokemon} />
       </Section>
       <Section>
-        <PokemonList pokemonList={MOCK_DATA} onAdd={handleAdd} />
+        <PokemonList pokemonList={MOCK_DATA} onAdd={addPokemon} />
       </Section>
     </DexPage>
   );
