@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import PokemonCard from './PokemonCard';
+import { usePokemon } from '../context/Context';
 
 const ListDiv = styled.div`
   display: grid;
@@ -11,11 +12,13 @@ const ListDiv = styled.div`
   }
 `;
 
-const PokemonList = ({ pokemonList, onAdd }) => {
+const PokemonList = () => {
+  const { pokemonList } = usePokemon();
+
   return (
     <ListDiv>
       {pokemonList.map(pokemon => (
-        <PokemonCard key={pokemon.id} pokemon={pokemon} onAdd={onAdd} />
+        <PokemonCard key={pokemon.id} pokemon={pokemon}/>
       ))}
     </ListDiv>
   );

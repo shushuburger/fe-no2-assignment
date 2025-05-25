@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import pokemonBall from '../assets/pokemonBall.png';
 import RedButton from '../styles/RedButton';
+import { usePokemon } from '../context/Context';
 
 const Container = styled.div`
   background-color: #fefefe;
@@ -77,35 +78,36 @@ const EmptySlot = styled.div`
   }
 `;
 
-
 const PokeballImg = styled.img`
   width: 40px;
 `;
 
-const Dashboard = ({ selectedList, onRemove }) => {
-    const filledSlots = selectedList.map((pokemon) => (
-        <Card key={pokemon.id}>
-            <Img src={pokemon.img_url} alt={pokemon.korean_name} />
-            <Label><strong>{pokemon.korean_name}</strong></Label>
-            <Label>No. {pokemon.id.toString().padStart(3, '0')}</Label>
-            <RedButton onClick={() => onRemove(pokemon.id)}>삭제</RedButton>    
-        </Card>
-    ));
+const Dashboard = () => {
+  const { selectedList, removePokemon } = usePokemon();
 
-    const emptySlots = Array(6 - selectedList.length).fill(null).map((_, i) => (
-        <EmptySlot key={`empty-${i}`}>
-            <PokeballImg src={pokemonBall} alt="pokemonBall" />
-        </EmptySlot>
-    ));
+  const filledSlots = selectedList.map((pokemon) => (
+    <Card key={pokemon.id}>
+      <Img src={pokemon.img_url} alt={pokemon.korean_name} />
+      <Label><strong>{pokemon.korean_name}</strong></Label>
+      <Label>No. {pokemon.id.toString().padStart(3, '0')}</Label>
+      <RedButton onClick={() => removePokemon(pokemon.id)}>삭제</RedButton>
+    </Card>
+  ));
 
-    return (
-        <Container>
-            <Title>나만의 포켓몬</Title>
-            <Grid>
-                {filledSlots.concat(emptySlots)}
-            </Grid>
-        </Container>
-    );
+  const emptySlots = Array(6 - selectedList.length).fill(null).map((_, i) => (
+    <EmptySlot key={`empty-${i}`}>
+      <PokeballImg src={pokemonBall} alt="pokemonBall" />
+    </EmptySlot>
+  ));
+
+  return (
+    <Container>
+      <Title>나만의 포켓몬</Title>
+      <Grid>
+        {filledSlots.concat(emptySlots)}
+      </Grid>
+    </Container>
+  );
 };
 
 export default Dashboard;

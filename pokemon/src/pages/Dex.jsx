@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import Dashboard from '../components/Dashboard';
 import PokemonList from '../components/PokemonList';
-import MOCK_DATA from '../data/mock';
-import { useState } from 'react';
+import { usePokemon } from '../context/Context';
 
 const DexPage = styled.div`
   max-width: 1300px;
@@ -18,31 +17,15 @@ const Section = styled.section`
 `;
 
 const Dex = () => {
-  const [selectedList, setSelectedList] = useState([]);
-
-  const handleAdd = (pokemon) => {
-    if (selectedList.some(p => p.id === pokemon.id)) {
-      alert("이미 선택된 포켓몬입니다.");
-      return;
-    }
-    if (selectedList.length >= 6) {
-      alert("더 이상 선택할 수 없습니다.");
-      return;
-    }
-    setSelectedList([...selectedList, pokemon]);
-  };
-
-  const handleRemove = (id) => {
-    setSelectedList(selectedList.filter(p => p.id !== id));
-  };
+  usePokemon();
 
   return (
     <DexPage>
       <Section>
-        <Dashboard selectedList={selectedList} onRemove={handleRemove} />
+        <Dashboard />
       </Section>
       <Section>
-        <PokemonList pokemonList={MOCK_DATA} onAdd={handleAdd} />
+        <PokemonList/>
       </Section>
     </DexPage>
   );

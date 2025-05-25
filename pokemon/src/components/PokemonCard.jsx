@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import RedButton from '../styles/RedButton';
+import { usePokemon } from '../context/Context';
 
 const Card = styled.div`
   border: 1px solid #ccc;
@@ -23,20 +24,22 @@ const Img = styled.img`
   cursor: pointer;
 `;
 
-const PokemonCard = ({ pokemon, onAdd }) => {
-    const navigate = useNavigate();
-    const goToDetail = () => {
-        navigate(`/pokemon-detail?id=${pokemon.id}`);
-    };
+const PokemonCard = ({ pokemon }) => {
+  const navigate = useNavigate();
+  const { addPokemon } = usePokemon();
 
-    return (
-        <Card>
-            <Img src={pokemon.img_url} alt={pokemon.korean_name} onClick={goToDetail} />
-            <h4>{pokemon.korean_name}</h4>
-            <p>No. {pokemon.id.toString().padStart(3, '0')}</p>
-            <RedButton onClick={() => onAdd(pokemon)}>추가</RedButton>
-        </Card>
-    );
+  const goToDetail = () => {
+    navigate(`/pokemon-detail?id=${pokemon.id}`);
+  };
+
+  return (
+    <Card>
+      <Img src={pokemon.img_url} alt={pokemon.korean_name} onClick={goToDetail} />
+      <h4>{pokemon.korean_name}</h4>
+      <p>No. {pokemon.id.toString().padStart(3, '0')}</p>
+      <RedButton onClick={() => addPokemon(pokemon)}>추가</RedButton>
+    </Card>
+  );
 };
 
 export default PokemonCard;
